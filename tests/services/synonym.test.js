@@ -85,7 +85,22 @@ describe('Synonym Search Tool - DFS Implementation', () => {
     expect(findSynonyms('nonexistent')).toEqual([]);
   });
 
-  test('Should handle empty input gracefully', () => {
-    expect(findSynonyms('')).toEqual([]);
+  test('Should return an error with empty input gracefully', () => {
+    expect(() => {
+      addSynonym('', '');
+    }).toThrow('Both word and synonym must be provided as strings or numbers');
+    expect(() => {
+      findSynonyms('');
+    }).toThrow('word must be provided as strings or numbers');
+
+    expect(() => {
+      addSynonym('word', null);
+    }).toThrow('Both word and synonym must be provided as strings or numbers');
+    expect(() => {
+      addSynonym(null, 'word');
+    }).toThrow('Both word and synonym must be provided as strings or numbers');
+    expect(() => {
+      findSynonyms(null);
+    }).toThrow('word must be provided as strings or numbers');
   });
 });

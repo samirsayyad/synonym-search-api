@@ -13,18 +13,16 @@ const addSynonym = (word, synonym) => {
       'Both word and synonym must be provided as strings or numbers'
     );
   }
-  const lowerCaseWord = String(word).toLowerCase();
-  const lowerCaseSynonym = String(synonym).toLowerCase();
 
-  [lowerCaseWord, lowerCaseSynonym].forEach((word) => {
+  [word, synonym].forEach((word) => {
     if (!synonymGraph.has(word)) {
       synonymGraph.set(word, new Set());
     }
   });
 
   // Add synonym of word and vice versa
-  synonymGraph.get(lowerCaseWord).add(lowerCaseSynonym);
-  synonymGraph.get(lowerCaseSynonym).add(lowerCaseWord);
+  synonymGraph.get(word).add(synonym);
+  synonymGraph.get(synonym).add(word);
 };
 
 // Depth-First Search (DFS) traversal
@@ -61,7 +59,7 @@ const findSynonyms = (word) => {
     throw new Error('word must be provided as strings or numbers');
   }
 
-  const synonyms = dfs(word.toLowerCase()); // Start DFS traversal from the initial word
+  const synonyms = dfs(word); // Start DFS traversal from the initial word
   return [...synonyms]; // Convert Set to Array for returning
 };
 
