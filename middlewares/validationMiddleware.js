@@ -14,7 +14,7 @@ const findSynonymSchema = Joi.object({
 /**
  * Middleware to validate requests for adding synonyms.
  */
-exports.validateAddSynonym = (req, res, next) => {
+const validateAddSynonym = (req, res, next) => {
   const { error } = addSynonymSchema.validate(req.body);
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
@@ -25,10 +25,12 @@ exports.validateAddSynonym = (req, res, next) => {
 /**
  * Middleware to validate requests for finding synonyms.
  */
-exports.validateFindSynonym = (req, res, next) => {
+const validateFindSynonym = (req, res, next) => {
   const { error } = findSynonymSchema.validate(req.body);
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
   next();
 };
+
+module.exports = { validateAddSynonym, validateFindSynonym };

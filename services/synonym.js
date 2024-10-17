@@ -2,20 +2,29 @@
 const synonymGraph = new Map();
 
 // Function to add synonyms (bi-directional)
-const addSynonym = (word1, word2) => {
-  if (typeof word1 !== 'string' || typeof word2 !== 'string') {
-    throw new Error('Both word1 and word2 must be strings');
+const addSynonym = (word, synonym) => {
+  if (
+    !word ||
+    !synonym ||
+    !['number', 'string'].includes(typeof word) ||
+    !['number', 'string'].includes(typeof synonym)
+  ) {
+    throw new Error(
+      'Both word and synonym must be provided as strings or numbers'
+    );
   }
+  const lowerCaseWord = String(word).toLowerCase();
+  const lowerCaseSynonym = String(synonym).toLowerCase();
 
-  [word1, word2].forEach((word) => {
+  [lowerCaseWord, lowerCaseSynonym].forEach((word) => {
     if (!synonymGraph.has(word)) {
       synonymGraph.set(word, new Set());
     }
   });
 
-  // Add word2 as synonym of word1 and vice versa
-  synonymGraph.get(word1).add(word2);
-  synonymGraph.get(word2).add(word1);
+  // Add synonym of word and vice versa
+  synonymGraph.get(lowerCaseWord).add(lowerCaseSynonym);
+  synonymGraph.get(lowerCaseSynonym).add(lowerCaseWord);
 };
 
 // Depth-First Search (DFS) traversal
@@ -48,11 +57,11 @@ const dfs = (word) => {
 
 // Function to find all synonyms of a given word, with transitive rule
 const findSynonyms = (word) => {
-  if (typeof word !== 'string') {
-    throw new Error('word must be a string');
+  if (!word || !['number', 'string'].includes(typeof word)) {
+    throw new Error('word must be provided as strings or numbers');
   }
 
-  const synonyms = dfs(word); // Start DFS traversal from the initial word
+  const synonyms = dfs(word.toLowerCase()); // Start DFS traversal from the initial word
   return [...synonyms]; // Convert Set to Array for returning
 };
 

@@ -1,4 +1,14 @@
-exports.errorHandler = (err, _req, res, _next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'An unexpected error occurred.' });
+const logger = require('../utils/logger');
+
+module.exports = (err, _req, res, _next) => {
+  logger.error(err);
+
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal Server Error';
+
+  res.status(statusCode).json({
+    error: {
+      message: message,
+    },
+  });
 };
