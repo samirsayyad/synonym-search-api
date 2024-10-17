@@ -10,7 +10,7 @@
   "scripts": {
     "test": "jest",
     "predeploy": "npm run test && npm run lint",
-    "deploy": "node index.js",
+    "start": "node index.js",
     "lint": "npx eslint . --ignore-pattern 'tests/'"
   },
   "author": "",
