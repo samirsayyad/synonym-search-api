@@ -1,6 +1,6 @@
 const logger = require('../utils/logger');
 
-module.exports = (err, _req, res, _next) => {
+module.exports = (err, _req, res) => {
   logger.error(err);
 
   const statusCode = err.statusCode || 500;
