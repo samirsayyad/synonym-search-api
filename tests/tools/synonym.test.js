@@ -2,7 +2,7 @@ const {
   addSynonym,
   findSynonyms,
   synonymGraph,
-} = require('../../tools/synonym');
+} = require('../../services/synonym');
 const { performance } = require('perf_hooks');
 
 describe('Synonym Search Tool - DFS Implementation', () => {
