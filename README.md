@@ -2,7 +2,9 @@
 
 This is the backend of the Synonym Search Tool, built using **Node.js**. The backend provides APIs to search for synonyms and add new synonyms. The application is designed to handle large datasets efficiently and is scalable.
 
-#### [Live demo link](https://synonym-search-api-5fb6ff9b4a59.herokuapp.com/)
+#### [Live demo](https://synonym-search-api-5fb6ff9b4a59.herokuapp.com/)
+
+#### [Frontend repo](https://github.com/samirsayyad/synonym-search-frontend)
 
 ## **Table of Contents**
 
