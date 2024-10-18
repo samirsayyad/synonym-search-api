@@ -29,25 +29,22 @@ This is the backend of the Synonym Search Tool, built using **Node.js**. The bac
 ## **Project Structure**
 
 ```bash
-├── src
-│   ├── controllers
-│   │   └── synonymController.js   # Contains logic for handling synonym operations
-│   ├── docs
-│   │   └── swaggerOptions.js
-│   ├── middlewares
-│   │   └── errorHandler.js      # middleware of error handling
-│   │   └── validationMiddleware.js      # middleware for validation
-│   ├── routes
-│   │   └── synonymRoutes.js       # API routes for synonym operations
-│   ├── services
-│   │   └── synonymService.js      # Service layer handling synonym logic
-│   ├── tests
-│   │   └── test files
-│   ├── utiles
-│   │   └── logger # will log under log folder in local
-│   └── index.js                     # Main application entry point
+├── controllers
+│   └── synonymController.js   # Contains logic for handling synonym operations
+├── docs
+│   └── swaggerOptions.js
+├── middlewares
+│   └── errorHandler.js      # middleware of error handling
+│   └── validationMiddleware.js      # middleware for validation
+├── routes
+│   └── synonymRoutes.js       # API routes for synonym operations
+├── services
+│   └── synonymService.js      # Service layer handling synonym logic
 ├── tests
 │   └── synonym.test.js            # Unit and integration tests for synonyms
+├── utiles
+│   └── logger # will log under log folder in local
+├── index.js                     # Main application entry point
 ├── package.json                   # Node.js dependencies and scripts
 └── README.md                      # Project documentation
 ```
