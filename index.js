@@ -28,8 +28,8 @@ app.use(helmet());
 
 // Routes
 
-app.use('/', (req, res) => {
-  res.send('Welcome to the synonym API');
+app.get('/', (req, res) => {
+  res.send('Welcome to the Synonym API');
 });
 app.use('/api', limiter);
 app.use('/api', synonymRoutes);
