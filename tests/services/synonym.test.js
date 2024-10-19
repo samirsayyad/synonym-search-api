@@ -113,6 +113,12 @@ describe('Synonym Search Tool - DFS Implementation', () => {
     }).toThrow('word must be provided as strings or numbers');
   });
 
+  test('Should handle case sensitive synonyms', () => {
+    addSynonym('clean', 'Wash');
+    expect(findSynonyms('clean')).toEqual(['wash']);
+    expect(findSynonyms('wash')).toEqual(['clean']);
+  });
+
   // deleteSynonym tests
   test('should not delete a synonym if word or synonym does not exist', () => {
     addSynonym('happy', 'joyful');
