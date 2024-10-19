@@ -99,6 +99,26 @@ This is the backend of the Synonym Search Tool, built using **Node.js**. The bac
 }
 ```
 
+### **3. Delete Synonym**
+
+**DELETE** `/delete-synonym`
+
+- **Description:** Delete synonym for a word.
+- **Request:**
+  - `word` (string) - The word to add a synonym for.
+  - `synonym` (string) - The synonym to add.
+- **Response:**
+  - `200 OK`: Synonym deleted successfully.
+  - `400 Bad Request`: Invalid input or missing data.
+- **Example:**
+
+```json
+{
+  "word": "happy",
+  "synonym": "joyous"
+}
+```
+
 ## **DFS Flow**
 
 Below is a diagram that demonstrates the logic behind the synonym search tool's depth-first search (DFS) algorithm. This algorithm traverses the data structure efficiently to find related synonyms.

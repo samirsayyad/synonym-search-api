@@ -204,4 +204,24 @@ describe('Synonym Search Tool - DFS Implementation', () => {
     // No deletions should have occurred
     expect(findSynonyms('happy')).toEqual(['joyful']);
   });
+
+  test('Should not delete cyclical relationships', () => {
+    addSynonym('A', 'B');
+    addSynonym('B', 'C');
+    addSynonym('C', 'A');
+    deleteSynonym('A', 'B');
+    expect(findSynonyms('A')).toEqual(['C', 'B']);
+    expect(findSynonyms('B')).toEqual(['C', 'A']);
+    expect(findSynonyms('C')).toEqual(['A', 'B']);
+  });
+  test('Should delete cyclical relationships', () => {
+    addSynonym('A', 'B');
+    addSynonym('B', 'C');
+    addSynonym('C', 'A');
+    deleteSynonym('B', 'C');
+    deleteSynonym('C', 'A');
+    expect(findSynonyms('A')).toEqual(['B']);
+    expect(findSynonyms('B')).toEqual(['A']);
+    expect(findSynonyms('C')).toEqual([]);
+  });
 });
