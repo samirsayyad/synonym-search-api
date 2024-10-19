@@ -25,6 +25,33 @@ const addSynonym = (word, synonym) => {
   synonymGraph.get(synonym).add(word);
 };
 
+const deleteSynonym = (word, synonym) => {
+  if (
+    !word ||
+    !synonym ||
+    !['number', 'string'].includes(typeof word) ||
+    !['number', 'string'].includes(typeof synonym)
+  ) {
+    throw new Error(
+      'Both word and synonym must be provided as strings or numbers'
+    );
+  }
+
+  if (synonymGraph.has(word)) {
+    synonymGraph.get(word).delete(synonym); // Delete synonym for word
+    if (synonymGraph.get(word).size === 0) {
+      synonymGraph.delete(word); // Remove word if it has no synonyms left
+    }
+  }
+
+  if (synonymGraph.has(synonym)) {
+    synonymGraph.get(synonym).delete(word); // Delete word for synonym
+    if (synonymGraph.get(synonym).size === 0) {
+      synonymGraph.delete(synonym); // Remove synonym if it has no synonyms left
+    }
+  }
+};
+
 // Depth-First Search (DFS) traversal
 const dfs = (word) => {
   const visited = new Set(); // To track visited words due to cyclical relationships
@@ -63,4 +90,4 @@ const findSynonyms = (word) => {
   return [...synonyms]; // Convert Set to Array for returning
 };
 
-module.exports = { addSynonym, findSynonyms, synonymGraph };
+module.exports = { addSynonym, findSynonyms, deleteSynonym, synonymGraph };

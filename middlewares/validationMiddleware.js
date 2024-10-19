@@ -11,6 +11,12 @@ const findSynonymSchema = Joi.object({
   word: Joi.string().min(1).required().label('Word'),
 });
 
+// Schema for deleting a synonym
+const deleteSynonymSchema = Joi.object({
+  word: Joi.string().min(1).required().label('Word'),
+  synonym: Joi.string().min(1).required().label('Synonym'),
+});
+
 /**
  * Middleware to validate requests for adding synonyms.
  */
@@ -33,4 +39,19 @@ const validateFindSynonym = (req, res, next) => {
   next();
 };
 
-module.exports = { validateAddSynonym, validateFindSynonym };
+/**
+ * Middleware to validate requests for deleting synonyms.
+ */
+const validateDeleteSynonym = (req, res, next) => {
+  const { error } = deleteSynonymSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+  next();
+};
+
+module.exports = {
+  validateAddSynonym,
+  validateFindSynonym,
+  validateDeleteSynonym,
+};

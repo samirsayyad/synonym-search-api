@@ -1,6 +1,7 @@
 const {
   addSynonym,
   findSynonyms,
+  deleteSynonym,
   synonymGraph,
 } = require('../../services/synonym');
 const { performance } = require('perf_hooks');
@@ -102,5 +103,105 @@ describe('Synonym Search Tool - DFS Implementation', () => {
     expect(() => {
       findSynonyms(null);
     }).toThrow('word must be provided as strings or numbers');
+  });
+
+  // deleteSynonym tests
+  test('should not delete a synonym if word or synonym does not exist', () => {
+    addSynonym('happy', 'joyful');
+
+    // Delete with non-existing synonym (e.g., "sad")
+    deleteSynonym('happy', 'sad');
+
+    // "happy" should still have "joyful" as synonym
+    expect(findSynonyms('happy')).toEqual(['joyful']);
+    expect(findSynonyms('joyful')).toEqual(['happy']);
+  });
+
+  test('should delete synonym completely when no more connections', () => {
+    addSynonym('happy', 'joyful');
+    addSynonym('happy', 'cheerful');
+
+    // Delete one synonym
+    deleteSynonym('happy', 'joyful');
+
+    // "happy" should only have "cheerful"
+    expect(findSynonyms('happy')).toEqual(['cheerful']);
+    expect(findSynonyms('joyful')).toEqual([]); // "joyful" should have no synonyms left
+
+    // Synonym graph should not contain "joyful" anymore
+    expect(synonymGraph.has('joyful')).toBe(false);
+  });
+  test('should delete a synonym pair in both directions', () => {
+    addSynonym('happy', 'joyful');
+
+    // Delete the synonym
+    deleteSynonym('happy', 'joyful');
+
+    // Both words should have no synonyms left
+    expect(findSynonyms('happy')).toEqual([]);
+    expect(findSynonyms('joyful')).toEqual([]);
+  });
+
+  // Edge case: Deleting a non-existent synonym
+  test('should handle deleting a non-existent synonym without error', () => {
+    addSynonym('happy', 'joyful');
+
+    // Try to delete a synonym that doesn't exist
+    expect(() => deleteSynonym('happy', 'sad')).not.toThrow();
+    expect(findSynonyms('happy')).toEqual(['joyful']);
+
+    expect(() => deleteSynonym('joyful', 'cheerful')).not.toThrow();
+    expect(findSynonyms('joyful')).toEqual(['happy']);
+  });
+
+  // Removing a word entirely if all synonyms are deleted
+  test('should remove a word from the graph if all its synonyms are deleted', () => {
+    addSynonym('happy', 'joyful');
+    addSynonym('happy', 'cheerful');
+
+    // Delete all synonyms for "happy"
+    deleteSynonym('happy', 'joyful');
+    deleteSynonym('happy', 'cheerful');
+
+    // "happy" should no longer exist in the graph
+    expect(synonymGraph.has('happy')).toBe(false);
+    expect(findSynonyms('happy')).toEqual([]);
+  });
+
+  // Deleting from a chain of synonyms
+  test('should delete only the specified synonym in a chain of synonyms', () => {
+    addSynonym('happy', 'joyful');
+    addSynonym('joyful', 'cheerful');
+
+    // Delete "joyful" from "happy", but keep "joyful" linked to "cheerful"
+    deleteSynonym('happy', 'joyful');
+
+    // "happy" should not have "joyful" anymore
+    expect(findSynonyms('happy')).toEqual([]);
+
+    // "joyful" should still be linked to "cheerful"
+    expect(findSynonyms('joyful')).toEqual(['cheerful']);
+    expect(findSynonyms('cheerful')).toEqual(['joyful']);
+  });
+
+  // Edge case: Deleting with empty or invalid inputs
+  test('should handle deletion with invalid inputs', () => {
+    addSynonym('happy', 'joyful');
+
+    // Invalid deletion calls
+    expect(() => deleteSynonym('', 'joyful')).toThrow(
+      'Both word and synonym must be provided as strings or numbers'
+    );
+    expect(() => deleteSynonym('happy', '')).toThrow(
+      'Both word and synonym must be provided as strings or numbers'
+    );
+    expect(() => deleteSynonym('', '')).toThrow(
+      'Both word and synonym must be provided as strings or numbers'
+    );
+    // delete something that doesn't exist
+    deleteSynonym('test', 'hello');
+
+    // No deletions should have occurred
+    expect(findSynonyms('happy')).toEqual(['joyful']);
   });
 });

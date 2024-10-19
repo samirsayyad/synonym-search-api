@@ -10,7 +10,7 @@ const errorHandler = require('./middlewares/errorHandler');
 
 const corsOptions = {
   origin: [process.env.FRONTEND_APP_URL || 'http://localhost:3000'],
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'DELETE'],
   credentials: true,
 };
 
