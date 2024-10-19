@@ -11,7 +11,6 @@ describe('Synonym Search Tool - DFS Implementation', () => {
   beforeEach(() => {
     synonymGraph.clear();
   });
-
   test('Stress test for synonym functions', () => {
     // Add a large number of synonyms
     for (let i = 0; i < 10000; i++) {
@@ -25,6 +24,15 @@ describe('Synonym Search Tool - DFS Implementation', () => {
     const timeTaken = end - start;
 
     console.log(`findSynonyms function took ${timeTaken} milliseconds.`);
+
+    // Log memory usage
+    const memoryUsage = process.memoryUsage();
+    console.log('Memory Usage for 10k synonyms (in MB):', {
+      rss: (memoryUsage.rss / 1024 / 1024).toFixed(2),
+      heapTotal: (memoryUsage.heapTotal / 1024 / 1024).toFixed(2),
+      heapUsed: (memoryUsage.heapUsed / 1024 / 1024).toFixed(2),
+      external: (memoryUsage.external / 1024 / 1024).toFixed(2),
+    });
 
     // Check that the correct synonyms were found
     expect(synonyms).toEqual(expect.arrayContaining(['word4999', 'word5001']));
