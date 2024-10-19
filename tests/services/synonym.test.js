@@ -85,9 +85,9 @@ describe('Synonym Search Tool - DFS Implementation', () => {
     addSynonym('A', 'B');
     addSynonym('B', 'C');
     addSynonym('C', 'A');
-    expect(findSynonyms('A')).toEqual(expect.arrayContaining(['B', 'C']));
-    expect(findSynonyms('B')).toEqual(expect.arrayContaining(['A', 'C']));
-    expect(findSynonyms('C')).toEqual(expect.arrayContaining(['A', 'B']));
+    expect(findSynonyms('A')).toEqual(expect.arrayContaining(['b', 'c']));
+    expect(findSynonyms('B')).toEqual(expect.arrayContaining(['a', 'c']));
+    expect(findSynonyms('C')).toEqual(expect.arrayContaining(['a', 'b']));
   });
 
   test('Should return an empty array for a word not in the synonym graph', () => {
@@ -218,9 +218,9 @@ describe('Synonym Search Tool - DFS Implementation', () => {
     addSynonym('B', 'C');
     addSynonym('C', 'A');
     deleteSynonym('A', 'B');
-    expect(findSynonyms('A')).toEqual(['C', 'B']);
-    expect(findSynonyms('B')).toEqual(['C', 'A']);
-    expect(findSynonyms('C')).toEqual(['A', 'B']);
+    expect(findSynonyms('A')).toEqual(['c', 'b']);
+    expect(findSynonyms('B')).toEqual(['c', 'a']);
+    expect(findSynonyms('C')).toEqual(['a', 'b']);
   });
   test('Should delete cyclical relationships', () => {
     addSynonym('A', 'B');
@@ -228,8 +228,8 @@ describe('Synonym Search Tool - DFS Implementation', () => {
     addSynonym('C', 'A');
     deleteSynonym('B', 'C');
     deleteSynonym('C', 'A');
-    expect(findSynonyms('A')).toEqual(['B']);
-    expect(findSynonyms('B')).toEqual(['A']);
+    expect(findSynonyms('A')).toEqual(['b']);
+    expect(findSynonyms('B')).toEqual(['a']);
     expect(findSynonyms('C')).toEqual([]);
   });
 });

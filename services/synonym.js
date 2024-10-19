@@ -13,16 +13,17 @@ const addSynonym = (word, synonym) => {
       'Both word and synonym must be provided as strings or numbers'
     );
   }
-
-  [word, synonym].forEach((word) => {
+  const normalizedWord = word.toString().toLowerCase();
+  const normalizedSynonym = synonym.toString().toLowerCase();
+  [normalizedWord, normalizedSynonym].forEach((word) => {
     if (!synonymGraph.has(word)) {
       synonymGraph.set(word, new Set());
     }
   });
 
   // Add synonym of word and vice versa
-  synonymGraph.get(word).add(synonym);
-  synonymGraph.get(synonym).add(word);
+  synonymGraph.get(normalizedWord).add(normalizedSynonym);
+  synonymGraph.get(normalizedSynonym).add(normalizedWord);
 };
 
 const deleteSynonym = (word, synonym) => {
@@ -37,17 +38,20 @@ const deleteSynonym = (word, synonym) => {
     );
   }
 
-  if (synonymGraph.has(word)) {
-    synonymGraph.get(word).delete(synonym); // Delete synonym for word
-    if (synonymGraph.get(word).size === 0) {
-      synonymGraph.delete(word); // Remove word if it has no synonyms left
+  const normalizedWord = word.toString().toLowerCase();
+  const normalizedSynonym = synonym.toString().toLowerCase();
+
+  if (synonymGraph.has(normalizedWord)) {
+    synonymGraph.get(normalizedWord).delete(normalizedSynonym); // Delete synonym for normalizedWord
+    if (synonymGraph.get(normalizedWord).size === 0) {
+      synonymGraph.delete(normalizedWord); // Remove normalizedWord if it has no synonyms left
     }
   }
 
-  if (synonymGraph.has(synonym)) {
-    synonymGraph.get(synonym).delete(word); // Delete word for synonym
-    if (synonymGraph.get(synonym).size === 0) {
-      synonymGraph.delete(synonym); // Remove synonym if it has no synonyms left
+  if (synonymGraph.has(normalizedSynonym)) {
+    synonymGraph.get(normalizedSynonym).delete(normalizedWord); // Delete word for synonym
+    if (synonymGraph.get(normalizedSynonym).size === 0) {
+      synonymGraph.delete(normalizedSynonym); // Remove synonym if it has no synonyms left
     }
   }
 };
@@ -85,8 +89,9 @@ const findSynonyms = (word) => {
   if (!word || !['number', 'string'].includes(typeof word)) {
     throw new Error('word must be provided as strings or numbers');
   }
+  const normalizedWord = word.toString().toLowerCase();
 
-  const synonyms = dfs(word); // Start DFS traversal from the initial word
+  const synonyms = dfs(normalizedWord); // Start DFS traversal from the initial word
   return [...synonyms]; // Convert Set to Array for returning
 };
 
